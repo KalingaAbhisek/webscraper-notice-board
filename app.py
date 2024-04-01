@@ -24,7 +24,7 @@ def scrape_websites():
                 data_dict[f"{text}"]=link
         array_of_objects=[]
         for key, value in data_dict.items():
-            array_of_objects.append({key: value})
+            array_of_objects.append({"notice": key,"link":value})
         print(array_of_objects)
         filter_criteria = {}
         collection.delete_many(filter_criteria)
