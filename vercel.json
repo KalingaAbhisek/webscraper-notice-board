@@ -1,7 +1,12 @@
 {
     "version": 2,
     "builds": [
-        {"src": "k.py", "use": "@vercel/python"}
+
+        {"src": "k.py", "use": "@vercel/python",
+        "config":{
+            "runtime": "python3.9"
+        }
+    }
     ],
     "routes": [
         {"src": "/(.*)", "dest": "k.py"}
