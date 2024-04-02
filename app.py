@@ -41,20 +41,21 @@ db = client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 print("Connected to MongoDB Client")
 
-schedule.every().hour.do(scrape_websites)
-
 @app.route("/api/data", methods=["GET"])
 def get_data():
     data = []
     for doc in collection.find({}, {'_id': False}):
         data.append(doc)
     return jsonify(data)
-
-if __name__ == "__main__":
+schedule.every().hour.do(scrape_websites)
+while True:
     scrape_websites()
+    schedule.run_pending()
+    time.sleep(1)
+    app.run(debug=True)
+
+# if __name__ == "__main__":
+#     scrape_websites()
     # Schedule web scraper function to run every hour
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-        app.run(debug=True)
+
 # pip install -r requirements.txt
