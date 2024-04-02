@@ -50,7 +50,8 @@ def get_data():
 
 if __name__ == "__main__":
     scrape_websites()
-    schedule.every().hour.do(scrape_websites)
+    # schedule.every().hour.do(scrape_websites)
+    schedule.every(2).minutes.do(scrape_websites)
     while True:
         scrape_websites()
         schedule.run_pending()
