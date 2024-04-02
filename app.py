@@ -47,15 +47,15 @@ def get_data():
     for doc in collection.find({}, {'_id': False}):
         data.append(doc)
     return jsonify(data)
-schedule.every().hour.do(scrape_websites)
-while True:
-    scrape_websites()
-    schedule.run_pending()
-    time.sleep(1)
-    app.run(debug=True)
 
-# if __name__ == "__main__":
-#     scrape_websites()
+if __name__ == "__main__":
+    scrape_websites()
+    schedule.every().hour.do(scrape_websites)
+    while True:
+        scrape_websites()
+        schedule.run_pending()
+        time.sleep(1)
+        app.run(debug=True)
     # Schedule web scraper function to run every hour
 
 # pip install -r requirements.txt
