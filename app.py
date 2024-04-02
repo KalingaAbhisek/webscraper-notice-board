@@ -52,11 +52,11 @@ if __name__ == "__main__":
     scrape_websites()
     # schedule.every().hour.do(scrape_websites)
     schedule.every(2).minutes.do(scrape_websites)
+    app.run(debug=True)
     while True:
         scrape_websites()
         schedule.run_pending()
         time.sleep(1)
-        app.run(debug=True)
     # Schedule web scraper function to run every hour
 
 # pip install -r requirements.txt
