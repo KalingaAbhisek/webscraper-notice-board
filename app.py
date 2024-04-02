@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import pymongo
-import schedule
 import certifi
 from flask import Flask, jsonify
+import threading
+import schedule
 import time
+
 ca = certifi.where()
 
 app = Flask(__name__)
@@ -41,6 +43,12 @@ db = client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 print("Connected to MongoDB Client")
 
+def scheduled_job():
+    schedule.every(2).minutes.do(scrape_websites)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 @app.route("/api/data", methods=["GET"])
 def get_data():
     data = []
@@ -49,14 +57,11 @@ def get_data():
     return jsonify(data)
 
 if __name__ == "__main__":
-    scrape_websites()
-    # schedule.every().hour.do(scrape_websites)
-    schedule.every(2).minutes.do(scrape_websites)
+    t = threading.Thread(target=scheduled_job)
+    t.start()
     app.run(debug=True)
-    while True:
-        scrape_websites()
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule.every().hour.do(scrape_websites)
+
     # Schedule web scraper function to run every hour
 
 # pip install -r requirements.txt
